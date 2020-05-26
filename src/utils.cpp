@@ -1,12 +1,13 @@
 #include "utils.h"
-#include <math.h>
+#include <random>
 
 std::unique_ptr<std::vector<bool>> generate_random_vector(const double p_success, const size_t simulation_size) {
   std::vector<bool> res;
   res.reserve(simulation_size);
-  const int threshold = std::floor(p_success * RAND_MAX + 0.5);
+  std::default_random_engine generator;
+  std::bernoulli_distribution bernoulli(p_success);
   for (size_t i = 0; i < simulation_size; i++) {
-    res.push_back(rand() > threshold);
+    res.push_back(bernoulli(generator));
   }
   return std::make_unique<std::vector<bool>>(std::vector<bool>(res));
 }
